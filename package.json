@@ -6,16 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@edwin-edu/ui": "0.11.0-feature.tooltip-wcag-dev5147.20",
     "jotai": "^2.4.3",
     "mobx": "^6.10.2",
     "mobx-state-tree": "^5.2.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-hook-form": "^7.46.2",
+    "react-router-dom": "^6.16.0",
     "recoil": "^0.7.7",
+    "uuid": "^9.0.1",
     "xstate": "^4.38.2",
     "zustand": "^4.4.1"
   },
@@ -23,8 +29,11 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/uuid": "^9.0.4",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "prettier": "^3.0.3",
+    "sass": "^1.68.0",
     "typescript": "latest"
   }
 }
