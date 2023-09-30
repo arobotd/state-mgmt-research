@@ -3,11 +3,14 @@
 
 import { create } from 'zustand'
 import { v4 as uuid } from 'uuid'
-import { Todo } from '@/app/shared'
-import { Button, Checkbox, Flex, H1, Input } from '@edwin-edu/ui'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import Image from 'next/image'
-import styles from '@/app/page.module.css'
+import {
+  Container,
+  Headline,
+  NewTodoUI,
+  Todo,
+  TodoItemUI,
+  TodoListUI,
+} from '@/app/shared'
 
 interface TodoState {
   todos: Todo[]
@@ -50,41 +53,20 @@ const useStore = create<TodoState>((set) => ({
   },
 }))
 
-interface FormData {
-  newTodo: string
-}
-
 export default function Zustand() {
   const todos = useStore((state) => state.todos)
   const addTodo = useStore((state) => state.addTodo)
-  const { handleSubmit, register, reset } = useForm<FormData>()
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    addTodo(data.newTodo)
-    reset()
-  }
 
   return (
-    <>
-      <div>
-        <H1 mb={2}>Zustand</H1>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{ marginBottom: '12px' }}
-        >
-          <Input
-            placeholder="New Todo"
-            defaultValue=""
-            {...register('newTodo', { required: true })}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-        <Flex as="ul">
-          {todos.map((todo) => (
-            <TodoItem {...todo} key={`todo-${todo.id}`} />
-          ))}
-        </Flex>
-      </div>
-    </>
+    <Container>
+      <Headline>Zustand</Headline>
+      <NewTodoUI addTodo={addTodo} />
+      <TodoListUI>
+        {todos.map((todo) => (
+          <TodoItem {...todo} key={`todo-${todo.id}`} />
+        ))}
+      </TodoListUI>
+    </Container>
   )
 }
 
@@ -98,41 +80,5 @@ const TodoItem = (todo: Todo) => {
       toggleCompleted={toggleCompleted}
       removeTodo={removeTodo}
     />
-  )
-}
-
-const TodoItemUI = (props: {
-  todo: Todo
-  toggleCompleted: TodoState['toggleCompleted']
-  removeTodo: TodoState['removeTodo']
-}) => {
-  const { todo, toggleCompleted, removeTodo } = props
-  const { id, description, completed } = todo
-
-  return (
-    <Flex as={'li'} gap={2}>
-      <input
-        id={id}
-        type="checkbox"
-        checked={!!completed}
-        onChange={() => toggleCompleted(id)}
-      />
-      <label
-        htmlFor={id}
-        style={
-          completed
-            ? {
-                textDecoration: 'line-through',
-                color: '#888888',
-              }
-            : undefined
-        }
-      >
-        {description}
-      </label>
-      <Button variant={'unstyled'} onClick={() => removeTodo(id)}>
-        <Image src="/trash-icon.svg" alt="Remove Todo" height={15} width={15} />
-      </Button>
-    </Flex>
   )
 }
