@@ -13,22 +13,34 @@ import {
 import { atom, PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { splitAtom } from 'jotai/utils'
 
+// STATE
+
 const todosAtom = atom<Todo[]>([])
 // note: can also do read-only and write-only atoms based on todosAtom i.e. atom((get) => get(todosAtom)) etc
 const todoAtomsAtom = splitAtom(todosAtom, (item) => item.id) // keyExtractor param creates the key so to use the atom's toString() method when mapping. i.e. <... key={`item-${atom}`}/>
+
+// ACTIONS
+
 // this could be written in-line in the main function but I separated it out to keep consistency
 const useAddTodo = () => {
   const dispatch = useSetAtom(todoAtomsAtom) // could also be: const [_, dispatch] = useAtom(todoAtomsAtom)
   return (description: string) => {
-    dispatch({ type: 'insert', value: { description, id: uuid() } })
+    dispatch({
+      type: 'insert',
+      value: { description, id: uuid() },
+    })
   }
 }
+
 const useTodoActions = (atom: PrimitiveAtom<Todo>) => {
   const dispatch = useSetAtom(todoAtomsAtom) // using splitAtom
   const setAtom = useSetAtom(atom)
   return {
     toggleCompleted: () => {
-      setAtom((oldValue) => ({ ...oldValue, completed: !oldValue.completed }))
+      setAtom((oldValue) => ({
+        ...oldValue,
+        completed: !oldValue.completed,
+      }))
     },
     removeTodo: () => {
       dispatch({ type: 'remove', atom })

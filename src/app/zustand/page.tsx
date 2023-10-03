@@ -12,12 +12,16 @@ import {
   TodoListUI,
 } from '@/app/shared'
 
+// NEED TO DECLARE TYPE BEFORE
+
 interface TodoState {
   todos: Todo[]
   addTodo: (description: string) => void
   removeTodo: (id: string) => void
   toggleCompleted: (id: string) => void
 }
+
+// STATE & ACTIONS
 
 const useStore = create<TodoState>((set) => ({
   // initial state
