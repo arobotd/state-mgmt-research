@@ -35,6 +35,7 @@ const useAddTodo = () => {
 const useTodoActions = (atom: PrimitiveAtom<Todo>) => {
   const dispatch = useSetAtom(todoAtomsAtom) // using splitAtom
   const setAtom = useSetAtom(atom)
+
   return {
     toggleCompleted: () => {
       setAtom((oldValue) => ({
